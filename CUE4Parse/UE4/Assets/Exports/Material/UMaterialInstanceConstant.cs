@@ -7,6 +7,10 @@ using CUE4Parse.UE4.Objects.Core.Math;
 
 namespace CUE4Parse.UE4.Assets.Exports.Material
 {
+    public class UMaterialInstanceDynamic : UMaterialInstanceConstant
+        {
+
+        }
     public class UMaterialInstanceConstant : UMaterialInstance
     {
         public FScalarParameterValue[] ScalarParameterValues = Array.Empty<FScalarParameterValue>();

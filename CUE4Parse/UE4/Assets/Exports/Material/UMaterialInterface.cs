@@ -5,6 +5,7 @@ using CUE4Parse.UE4.Assets.Exports.Texture;
 using CUE4Parse.UE4.Assets.Objects;
 using CUE4Parse.UE4.Assets.Readers;
 using CUE4Parse.UE4.Objects.Core.Math;
+using CUE4Parse.UE4.Objects.Core.Misc;
 using CUE4Parse.UE4.Objects.UObject;
 using CUE4Parse.UE4.Readers;
 using CUE4Parse.UE4.Versions;
@@ -29,6 +30,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Material
         public FMaterialTextureInfo[] TextureStreamingData = Array.Empty<FMaterialTextureInfo>();
         public List<FMaterialResource> LoadedMaterialResources = new();
 
+        public FSHAHash HWMatHash;
         public override void Deserialize(FAssetArchive Ar, long validPos)
         {
             base.Deserialize(Ar, validPos);
@@ -48,12 +50,19 @@ namespace CUE4Parse.UE4.Assets.Exports.Material
                 CachedExpressionData = new FStructFallback(Ar, "MaterialCachedExpressionData");
             }
 
-            if (Ar.Game == EGame.GAME_HogwartsLegacy) Ar.Position +=20; // FSHAHash
+            if (Ar.Game == EGame.GAME_HogwartsLegacy)
+            {
+                HWMatHash = new FSHAHash(Ar); 
+            }
         }
 
         protected internal override void WriteJson(JsonWriter writer, JsonSerializer serializer)
         {
             base.WriteJson(writer, serializer);
+
+            writer.WritePropertyName("HWMatHash");
+            writer.WriteValue(BitConverter.ToString(HWMatHash.Hash));
+            //serializer.Serialize(writer, HWMatHash);
 
             if (LoadedMaterialResources.Count <= 0) return;
             writer.WritePropertyName("LoadedMaterialResources");

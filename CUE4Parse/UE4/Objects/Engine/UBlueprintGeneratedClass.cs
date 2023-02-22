@@ -26,6 +26,30 @@ namespace CUE4Parse.UE4.Objects.Engine
                     }
                 }
             }
+
+            if (!Ar.HasUnversionedProperties)
+            {
+                foreach (var prop in ChildProperties)
+                {
+                    if (prop is FMapProperty mapprop)
+                    {
+                        var keyOverride = "";
+                        var valueOverride = "";
+                        if (mapprop.KeyProp is FStructProperty keyPropStruc && keyPropStruc.Struct.IsImport && keyPropStruc.Struct.TryLoad(out var keyExport))
+                        {
+                            keyOverride = keyExport?.Name;
+                        }
+
+                        if (mapprop.ValueProp is FStructProperty valuePropStruc && valuePropStruc.Struct.IsImport && valuePropStruc.Struct.TryLoad(out var valueExport))
+                        {
+                            valueOverride = valueExport?.Name;
+                        }
+
+                        if (!string.IsNullOrEmpty(keyOverride) || !string.IsNullOrEmpty(valueOverride))
+                            Ar.Versions.MapStructTypes[mapprop.Name.Text] = new KeyValuePair<string, string>(keyOverride, valueOverride);
+                    }
+                }
+            }
         }
 
         protected internal override void WriteJson(JsonWriter writer, JsonSerializer serializer)

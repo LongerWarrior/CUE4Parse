@@ -40,6 +40,7 @@ namespace CUE4Parse.UE4.Assets
             IFileProvider? provider = null, TypeMappings? mappings = null) : base(uasset.Name.SubstringBeforeLast('.'), provider, mappings)
         {
             GlobalData = globalData;
+            uasset.Versions = (VersionContainer) uasset.Versions.Clone();
             var uassetAr = new FAssetArchive(uasset, this);
 
             FExportBundleHeader[] exportBundleHeaders;

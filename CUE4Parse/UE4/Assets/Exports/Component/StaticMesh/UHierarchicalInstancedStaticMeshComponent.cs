@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace CUE4Parse.UE4.Assets.Exports.Component.StaticMesh
 {
+    public class UFoliageInstancedStaticMeshComponent : UHierarchicalInstancedStaticMeshComponent { }
     public class UHierarchicalInstancedStaticMeshComponent : UInstancedStaticMeshComponent
     {
         public FClusterNode_DEPRECATED[]? ClusterTree;

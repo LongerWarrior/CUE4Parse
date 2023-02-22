@@ -38,7 +38,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Component.StaticMesh
     public class FStaticMeshComponentLODInfo
     {
         private const byte OverrideColorsStripFlag = 1;
-        public readonly FGuid MapBuildDataId;
+        public readonly FGuid? MapBuildDataId;
         public readonly FPaintedVertex[] PaintedVertices;
         public readonly FColorVertexBuffer? OverrideVertexColors;
 
@@ -48,7 +48,15 @@ namespace CUE4Parse.UE4.Assets.Exports.Component.StaticMesh
 
             if (!stripFlags.IsDataStrippedForServer())
             {
-                MapBuildDataId = Ar.Read<FGuid>();
+                if (FRenderingObjectVersion.Get(Ar) < FRenderingObjectVersion.Type.MapBuildDataSeparatePackage)
+                {
+                    var lightMap = Ar.ReadArray<FGuid>();
+                    var shadowMap = Ar.ReadArray<FGuid>();
+                }
+                else
+                {
+                    MapBuildDataId = Ar.Read<FGuid>();
+                }
             }
 
             if (!stripFlags.IsClassDataStripped(OverrideColorsStripFlag))

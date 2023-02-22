@@ -35,7 +35,14 @@ namespace CUE4Parse.UE4.Assets.Exports.Component.StaticMesh
                 if (renderDataSizeBytes > 0)
                 {
                     // idk what to do here... But it fixes the warnings 🤷‍
-                    Ar.Position = validPos;
+                    Ar.Position += renderDataSizeBytes;
+                    //there are few bulk arrays
+                    //bytes?
+                    //Fvector4
+                    //flags
+                    //some 24 struct
+                    //some flota/int
+                    //Ar.Position = validPos;
                 }
             }
         }

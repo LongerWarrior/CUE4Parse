@@ -336,6 +336,7 @@ namespace CUE4Parse.FileProvider
                 if (p.Contains('.'))
                 {
                     var ret = string.Concat(gameName, "/Content/", path.SubstringAfter('/'));
+                    if(!root.Equals("Engine", comparisonType) && !TryFindGameFile(ret, out _)) ret = string.Concat(gameName.ToLowerInvariant(), "/Content/", path.SubstringAfter('/'));
                     return comparisonType == StringComparison.OrdinalIgnoreCase ? ret.ToLowerInvariant() : ret;
                 }
 
@@ -349,6 +350,7 @@ namespace CUE4Parse.FileProvider
                 else
                 {
                     var ret = string.Concat(gameName, "/Content/", path.SubstringAfter('/'));
+                    if(!root.Equals("Engine", comparisonType) && !TryFindGameFile(ret, out _)) ret = string.Concat(gameName.ToLowerInvariant(), "/Content/", path.SubstringAfter('/'));
                     return comparisonType == StringComparison.OrdinalIgnoreCase ? ret.ToLowerInvariant() : ret;
                 }
             }

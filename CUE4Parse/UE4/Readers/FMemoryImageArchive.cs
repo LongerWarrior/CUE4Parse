@@ -105,6 +105,7 @@ namespace CUE4Parse.UE4.Readers
 
         public override T[] ReadArray<T>(Func<T> getter)
         {
+            var align = InnerArchive.Name == "FPakFileData" ? 8 : 4;
             var initialPos = Position;
             var dataPtr = new FFrozenMemoryImagePtr(this);
             var arrayNum = Read<int>();
@@ -124,7 +125,7 @@ namespace CUE4Parse.UE4.Readers
             for (int i = 0; i < data.Length; i++)
             {
                 data[i] = getter();
-                Position = Position.Align(8);
+                Position = Position.Align(align);
             }
             Position = continuePos;
             return data;

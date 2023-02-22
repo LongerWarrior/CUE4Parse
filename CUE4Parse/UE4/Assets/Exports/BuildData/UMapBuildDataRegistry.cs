@@ -71,7 +71,7 @@ namespace CUE4Parse.UE4.Assets.Exports.BuildData
                     }
                 }
 
-                if (FRenderingObjectVersion.Get(Ar) >= FRenderingObjectVersion.Type.SkyAtmosphereStaticLightingVersioning)
+                if (Ar.Game != EGame.GAME_HogwartsLegacy && FRenderingObjectVersion.Get(Ar) >= FRenderingObjectVersion.Type.SkyAtmosphereStaticLightingVersioning)
                 {
                     numEntries = Ar.Read<int>();
                     SkyAtmosphereBuildData = new Dictionary<FGuid, FSkyAtmosphereMapBuildData>(numEntries);
@@ -79,6 +79,11 @@ namespace CUE4Parse.UE4.Assets.Exports.BuildData
                     {
                         SkyAtmosphereBuildData[Ar.Read<FGuid>()] = new FSkyAtmosphereMapBuildData(Ar);
                     }
+                }
+
+                if (Ar.Game == EGame.GAME_HogwartsLegacy)
+                {
+                    Ar.SkipFixedArray(1);
                 }
             }
         }

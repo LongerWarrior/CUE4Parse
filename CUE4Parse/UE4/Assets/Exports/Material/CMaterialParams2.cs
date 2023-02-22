@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CUE4Parse.UE4.Assets.Exports.Texture;
@@ -45,7 +46,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Material
         public static readonly string[][] Diffuse = {
             new []
             {
-                "Diffuse Map", "Skin Diffuse", "Iris Diffuse", "Base_Color", "Trunk_BaseColor", "ShadedDiffuse",
+                "Base_Diffuse", "Base Diffuse", "Base_Color", "Diffuse Color Map", "Diffuse Map", "Skin Diffuse", "Iris Diffuse", "Trunk_BaseColor", "ShadedDiffuse",
                 "Background Diffuse", "BG Diffuse Texture", "Diffuse", "Diffuse_1", "DiffuseTexture", "DiffuseMap", "Diffuse A", "Diffuse Top", "Diffuse Side", "Diffuse Base", "Diffuse Base Map", "DiffuseLayer1",
                 "Albedo", "ALB", "TextureAlbedo",
                 "Base Color Texture", "BaseColorTexture", "Base Color", "BaseColor", "Base Texture Color", "BaseColorA", "BC", "Color", "CO", "CO_", "CO_1", "Base_CO",
@@ -64,7 +65,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Material
         public static readonly string[][] Normals = {
             new []
             {
-                "Normal Map", "Skin Normal", "T_Iris_N", "Base_Normal", "Trunk_Normal",
+                "Base_Normal", "Base Normal", "Normal Map", "Skin Normal", "T_Iris_N", "Trunk_Normal", 
                 "Normals", "Normal", "NormalA", "NormalTexture", "Normal Texture", "NormalMap", "T_Normal", "Normals Top", "Normals Side", "Fallback Normal",
                 "Normal Base", "TextureNormal", "Tex_BakedNormal", "TexNor", "BakedNormalMap", "Base Texture Normal", "Normal Base Map",
                 "NM", "NM_1", "Base_NM", "NRM", "T_NRM", "M1_T_NRM", "Base NRM", "NRM Base",
@@ -82,7 +83,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Material
         public static readonly string[][] SpecularMasks = {
             new []
             {
-                "SRO Map", "Skin SRXO", "Base_SRO", "Trunk_Specular", "PackedTexture",
+                "Base_SRO", "SRO Map", "Skin SRXO", "Trunk_Specular", "PackedTexture",
                 "SpecularMasks", "Specular", "SpecMap", "T_Specular", "Specular Top", "Specular Side",
                 "MG", "ORM", "MRAE", "MRAS", "MRAO", "MRA", "MRA A", "MRS", "LP", "LP_1", "Base_LP",
                 "TextureRMA", "Tex_MultiMask", "Tex_Multi", "TexMRC", "TexMRA", "TexRCN", "MultiMaskMap", "Base Texture RMAO",
@@ -225,11 +226,11 @@ namespace CUE4Parse.UE4.Assets.Exports.Material
             return mapping;
         }
 
-        public bool TryGetTexture2d(out UTexture2D? texture, params string[] names)
+        public bool TryGetTexture2d(out UTexture2D? texture, string exception = null, params string[] names)
         {
             for (int i = 0; i < names.Length; i++)
             {
-                if (Textures.TryGetValue(names[i], out var unrealMaterial) && unrealMaterial is UTexture2D texture2d)
+                if (Textures.TryGetValue(names[i], out var unrealMaterial) && unrealMaterial.Name != exception && unrealMaterial is UTexture2D texture2d)
                 {
                     texture = texture2d;
                     return true;

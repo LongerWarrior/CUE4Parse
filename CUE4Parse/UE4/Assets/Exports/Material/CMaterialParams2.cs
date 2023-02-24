@@ -46,7 +46,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Material
         public static readonly string[][] Diffuse = {
             new []
             {
-                "Base_Diffuse", "Base Diffuse", "Base_Color", "Diffuse Color Map", "Diffuse Map", "Skin Diffuse", "Iris Diffuse", "Trunk_BaseColor", "ShadedDiffuse",
+                "Base_Diffuse", "Base Diffuse", "Base_Color", "Diffuse Color Map", "Diffuse Map", "Skin Diffuse", "Iris Diffuse", "Trunk_BaseColor", "ShadedDiffuse", "PM_Diffuse",
                 "Background Diffuse", "BG Diffuse Texture", "Diffuse", "Diffuse_1", "DiffuseTexture", "DiffuseMap", "Diffuse A", "Diffuse Top", "Diffuse Side", "Diffuse Base", "Diffuse Base Map", "DiffuseLayer1",
                 "Albedo", "ALB", "TextureAlbedo",
                 "Base Color Texture", "BaseColorTexture", "Base Color", "BaseColor", "Base Texture Color", "BaseColorA", "BC", "Color", "CO", "CO_", "CO_1", "Base_CO",

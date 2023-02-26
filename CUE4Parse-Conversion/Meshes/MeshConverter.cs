@@ -264,9 +264,7 @@ namespace CUE4Parse_Conversion.Meshes
 
                     var i2 = 0;
                     uint packedWeights = 0;
-                    var len = v.Infs.BoneWeight.Length;
-                    len = len > 4 ? 4 : len;
-
+                    var len = Math.Min(v.Infs.BoneWeight.Length, 4);
                     for (var j = 0; j < len; j++)
                     {
                         uint boneWeight = v.Infs.BoneWeight[j];

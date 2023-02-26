@@ -16,7 +16,7 @@ namespace CUE4Parse.UE4.Assets.Exports.SkeletalMesh
             BoneWeight = new byte[NUM_INFLUENCES_UE4];
         }
 
-        public FSkinWeightInfo(FArchive Ar, bool bExtraBoneInfluences, bool bUse16BitBoneIndex = false, byte length = 0) : this()
+        public FSkinWeightInfo(FArchive Ar, bool bExtraBoneInfluences, bool bUse16BitBoneIndex = false, int length = 0)
         {
             var numSkelInfluences = bExtraBoneInfluences ? MAX_TOTAL_INFLUENCES_UE4 : NUM_INFLUENCES_UE4;
             if (length > 0) numSkelInfluences = length;

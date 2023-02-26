@@ -1,4 +1,5 @@
 using System;
+using CUE4Parse.UE4.Exceptions;
 using CUE4Parse.UE4.Objects.Engine;
 using CUE4Parse.UE4.Readers;
 using CUE4Parse.UE4.Versions;
@@ -19,7 +20,7 @@ namespace CUE4Parse.UE4.Assets.Exports.SkeletalMesh
             var dataStripFlags = Ar.Read<FStripDataFlags>();
 
             #region FSkinWeightDataVertexBuffer::SerializeMetaData
-            bool bVariableBonesPerVertex;
+            bool bVariableBonesPerVertex = false;
             bool bExtraBoneInfluences;
             uint maxBoneInfluences;
             bool bUse16BitBoneIndex = false;
@@ -99,20 +100,24 @@ namespace CUE4Parse.UE4.Assets.Exports.SkeletalMesh
                 {
                     using var tempAr = new FByteArchive("WeightsReader", newData, Ar.Versions);
                     Weights = new FSkinWeightInfo[numVertices];
-                    var bUseLookupData = false;
-                    if (LookupData.Length == numVertices) bUseLookupData = true;
-                    for (var i = 0; i < Weights.Length; i++)
+
+                    if (bVariableBonesPerVertex)
                     {
-                        if (bUseLookupData)
+                        if (LookupData.Length != numVertices)
+                            throw new ParserException($"LookupData NumVertices={LookupData.Length} != NumVertices={numVertices}");
+
+                        for (var i = 0; i < Weights.Length; i++)
                         {
                             tempAr.Position = LookupData[i] >> 8;
                             Weights[i] = new FSkinWeightInfo(tempAr, bExtraBoneInfluences, bUse16BitBoneIndex, (byte)LookupData[i]);
                         }
-                        else
+                    }
+                    else
+                    {
+                        for (var i = 0; i < Weights.Length; i++)
                         {
                             Weights[i] = new FSkinWeightInfo(tempAr, bExtraBoneInfluences, bUse16BitBoneIndex);
                         }
-                        
                     }
                 }
             }

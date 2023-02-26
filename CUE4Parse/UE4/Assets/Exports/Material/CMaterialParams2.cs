@@ -64,11 +64,11 @@ namespace CUE4Parse.UE4.Assets.Exports.Material
         public static readonly string[][] Normals = {
             new []
             {
-                "Trunk_Normal",
+                "Trunk_Normal", "Skin Normal",
                 "Normals", "Normal", "NormalA", "NormalTexture", "Normal Texture", "Normal Map", "NormalMap", "Normal A Map", "T_Normal", "Normals Top", "Normals Side", "Fallback Normal",
                 "Base_Normal", "Base Normal", "Normal Base", "TextureNormal", "Tex_BakedNormal", "TexNor", "BakedNormalMap", "Base Texture Normal", "Normal Base Map",
                 "NM", "NM_1", "Base_NM", "NRM", "T_NRM", "M1_T_NRM", "Base NRM", "NRM Base",
-                "Texture A Normal", "CliffNormal", "Skin Normal", "T_Iris_N",
+                "Texture A Normal", "CliffNormal", "T_Iris_N",
             },
             new []{ "Normals_Texture_2", "Texture B Normal", "NormalB", "Normal B Map", "NM_2", "M2_T_NRM" },
             new []{ "Normals_Texture_3", "Texture C Normal", "NormalC", "Normal C Map", "NM_3", "M3_T_NRM" },
@@ -230,7 +230,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Material
         {
             for (int i = 0; i < names.Length; i++)
             {
-                if (Textures.TryGetValue(names[i], out var unrealMaterial) && unrealMaterial.Name != exception && unrealMaterial is UTexture2D texture2d)
+                if (Textures.TryGetValue(names[i], out var unrealMaterial) && !unrealMaterial.Name.StartsWith(exception) && unrealMaterial is UTexture2D texture2d)
                 {
                     texture = texture2d;
                     return true;

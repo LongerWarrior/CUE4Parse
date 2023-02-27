@@ -271,7 +271,7 @@ namespace CUE4Parse.UE4.Readers
         public override FName ReadFName()
         {
             Position += 4 + 4 + 4;
-            if (Names != null && Names.TryGetValue((int) Position, out var name))
+            if (Names != null && Names.TryGetValue((int) Position - 12, out var name))
             {
                 return name;
             }

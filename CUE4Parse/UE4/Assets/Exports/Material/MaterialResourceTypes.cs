@@ -513,7 +513,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Material
         {
             ParameterInfo = new FMemoryImageMaterialParameterInfo(Ar);
             DefaultValue = Ar.Read<float>();
-            Ar.Position +=4;
+            //Ar.Position +=4;
         }
     }
 

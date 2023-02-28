@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CUE4Parse.FileProvider;
@@ -151,8 +151,11 @@ namespace CUE4Parse.UE4.Objects.UObject
             writer.WritePropertyName("AssetPathName");
             serializer.Serialize(writer, value.AssetPathName);
 
-            writer.WritePropertyName("SubPathString");
-            writer.WriteValue(value.SubPathString);
+            if (!string.IsNullOrEmpty(value.SubPathString))
+            {
+                writer.WritePropertyName("SubPathString");
+                writer.WriteValue(value.SubPathString);
+            }
 
             writer.WriteEndObject();
         }

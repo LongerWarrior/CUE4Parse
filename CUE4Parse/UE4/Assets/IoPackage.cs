@@ -321,29 +321,6 @@ namespace CUE4Parse.UE4.Assets
                     resultString.Append(CreateFNameFromMappedName(entry.ObjectName));
                 }
             }
-
-
-
-
-
-
-
-
-
-
-
-            //if (GlobalData.ScriptObjectEntriesMap.TryGetValue(entry.OuterIndex, out var scriptObjectEntry))
-            //{
-            //    if (scriptObjectEntry.OuterIndex.IsNull) {
-            //        resultString.Append(CreateFNameFromMappedName(entry.ObjectName));
-            //    }
-            //    else
-            //    {
-            //        GetFullClassPath(scriptObjectEntry, resultString);
-            //        resultString.Append(".");
-            //        resultString.Append(CreateFNameFromMappedName(scriptObjectEntry.ObjectName));
-            //    }
-            //}
         }
 
 

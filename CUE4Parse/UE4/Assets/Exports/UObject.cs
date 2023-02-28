@@ -302,8 +302,16 @@ namespace CUE4Parse.UE4.Assets.Exports
             // classpath
             if (ClassIndex != null && Owner is IoPackage owner)
             {
+                var index = (FPackageObjectIndex)ClassIndex;
+
+                if (!index.IsImport)
+                {
+                    writer.WritePropertyName("ClassRef");
+                    serializer.Serialize(writer, owner.ResolveObjectIndex(index));
+                }
+                
                 writer.WritePropertyName("ClassPath");
-                writer.WriteValue(owner.GetFullClassPath((FPackageObjectIndex)ClassIndex));
+                writer.WriteValue(owner.GetFullClassPath(index));
             }
 
             // export properties

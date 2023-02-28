@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,6 +9,7 @@ using CUE4Parse.MappingsProvider;
 using CUE4Parse.UE4.Assets.Exports;
 using CUE4Parse.UE4.Assets.Readers;
 using CUE4Parse.UE4.Exceptions;
+using CUE4Parse.UE4.IO.Objects;
 using CUE4Parse.UE4.Objects.UObject;
 using Newtonsoft.Json;
 using Serilog;
@@ -34,7 +35,7 @@ namespace CUE4Parse.UE4.Assets
             Flags |= EObjectFlags.RF_WasLoaded;
         }
 
-        protected static UObject ConstructObject(UStruct? struc)
+        protected static UObject ConstructObject(UStruct? struc, FPackageObjectIndex? classIndex = null)
         {
             UObject? obj = null;
             var current = struc;
@@ -54,6 +55,7 @@ namespace CUE4Parse.UE4.Assets
             obj ??= new UObject();
             obj.Class = struc;
             obj.Flags |= EObjectFlags.RF_WasLoaded;
+            obj.ClassIndex = classIndex;
             return obj;
         }
 

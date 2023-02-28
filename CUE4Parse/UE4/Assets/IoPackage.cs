@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using CUE4Parse.FileProvider;
 using CUE4Parse.MappingsProvider;
 using CUE4Parse.UE4.Assets.Exports;
@@ -205,7 +207,7 @@ namespace CUE4Parse.UE4.Assets
                         ExportsLazy[localExportIndex] = new Lazy<UObject>(() =>
                         {
                             // Create
-                            var obj = ConstructObject(ResolveObjectIndex(export.ClassIndex)?.Object?.Value as UStruct);
+                            var obj = ConstructObject(ResolveObjectIndex(export.ClassIndex)?.Object?.Value as UStruct, export.ClassIndex);
                             obj.Name = CreateFNameFromMappedName(export.ObjectName).Text;
                             obj.Outer = (ResolveObjectIndex(export.OuterIndex) as ResolvedExportObject)?.ExportObject.Value ?? this;
                             obj.Super = ResolveObjectIndex(export.SuperIndex) as ResolvedExportObject;
@@ -301,6 +303,65 @@ namespace CUE4Parse.UE4.Assets
             if (index.IsExport && index.Index - 1 < ExportMap.Length)
                 return new ResolvedExportObject(index.Index - 1, this);
             return null;
+        }
+
+
+        private void GetFullClassPath(FScriptObjectEntry entry, StringBuilder resultString)
+        {
+            if (entry.OuterIndex.IsNull)
+            {
+               resultString.Append(CreateFNameFromMappedName(entry.ObjectName));
+            }
+            else
+            {
+                if (GlobalData.ScriptObjectEntriesMap.TryGetValue(entry.OuterIndex, out var scriptObjectEntry))
+                {
+                    GetFullClassPath(scriptObjectEntry, resultString);
+                    resultString.Append(".");
+                    resultString.Append(CreateFNameFromMappedName(entry.ObjectName));
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+            //if (GlobalData.ScriptObjectEntriesMap.TryGetValue(entry.OuterIndex, out var scriptObjectEntry))
+            //{
+            //    if (scriptObjectEntry.OuterIndex.IsNull) {
+            //        resultString.Append(CreateFNameFromMappedName(entry.ObjectName));
+            //    }
+            //    else
+            //    {
+            //        GetFullClassPath(scriptObjectEntry, resultString);
+            //        resultString.Append(".");
+            //        resultString.Append(CreateFNameFromMappedName(scriptObjectEntry.ObjectName));
+            //    }
+            //}
+        }
+
+
+        public string GetFullClassPath(FPackageObjectIndex index)
+        {
+            if (index.IsScriptImport)
+            {
+                var result = new StringBuilder(256);
+
+                if (GlobalData.ScriptObjectEntriesMap.TryGetValue(index, out var scriptObjectEntry))
+                {
+                    GetFullClassPath(scriptObjectEntry, result);
+                }
+
+                return result.ToString();
+            }
+            return "";
+
         }
 
         public ResolvedObject? ResolveObjectIndex(FPackageObjectIndex index)

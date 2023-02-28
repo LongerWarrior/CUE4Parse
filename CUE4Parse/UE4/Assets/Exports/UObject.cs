@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using CUE4Parse.MappingsProvider;
@@ -8,6 +9,8 @@ using CUE4Parse.UE4.Assets.Objects;
 using CUE4Parse.UE4.Assets.Objects.Unversioned;
 using CUE4Parse.UE4.Assets.Readers;
 using CUE4Parse.UE4.Exceptions;
+using CUE4Parse.UE4.IO;
+using CUE4Parse.UE4.IO.Objects;
 using CUE4Parse.UE4.Objects.Core.Misc;
 using CUE4Parse.UE4.Objects.UObject;
 using CUE4Parse.UE4.Versions;
@@ -33,6 +36,7 @@ namespace CUE4Parse.UE4.Assets.Exports
         public List<FPropertyTag> Properties { get; private set; }
         public FGuid? ObjectGuid { get; private set; }
         public EObjectFlags Flags;
+        public FPackageObjectIndex? ClassIndex;
 
         // public FObjectExport Export;
         public IPackage? Owner
@@ -293,6 +297,13 @@ namespace CUE4Parse.UE4.Assets.Exports
             {
                 writer.WritePropertyName("Class");
                 serializer.Serialize(writer, Class.GetFullName());
+            }
+
+            // classpath
+            if (ClassIndex != null && Owner is IoPackage owner)
+            {
+                writer.WritePropertyName("ClassPath");
+                writer.WriteValue(owner.GetFullClassPath((FPackageObjectIndex)ClassIndex));
             }
 
             // export properties

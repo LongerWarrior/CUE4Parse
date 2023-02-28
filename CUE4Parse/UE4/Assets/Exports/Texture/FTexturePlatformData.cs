@@ -80,7 +80,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Texture
             Mips = new FTexture2DMipMap[mipCount];
             for (var i = 0; i < Mips.Length; i++)
             {
-                Mips[i] = new FTexture2DMipMap(Ar);
+                Mips[i] = i == 0 ? new FTexture2DMipMap(Ar): new FTexture2DMipMap(Ar, true);
             }
 
             if (Ar.Versions["VirtualTextures"])

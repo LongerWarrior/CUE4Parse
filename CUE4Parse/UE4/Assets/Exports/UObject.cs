@@ -276,6 +276,9 @@ namespace CUE4Parse.UE4.Assets.Exports
             {
                 writer.WritePropertyName("Outer");
                 writer.WriteValue(Outer.Name); // TODO serialize the path too
+
+                writer.WritePropertyName("AssetPath");
+                writer.WriteValue(Outer.GetPathName());
             }
 
             // super
@@ -309,9 +312,16 @@ namespace CUE4Parse.UE4.Assets.Exports
                     writer.WritePropertyName("ClassRef");
                     serializer.Serialize(writer, owner.ResolveObjectIndex(index));
                 }
-                
+
                 writer.WritePropertyName("ClassPath");
                 writer.WriteValue(owner.GetFullClassPath(index));
+
+            }
+
+            if (Outer != null)
+            {
+                writer.WritePropertyName("AssetPath");
+                writer.WriteValue(Outer.GetPathName());
             }
 
             // export properties

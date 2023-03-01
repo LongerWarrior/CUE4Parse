@@ -318,6 +318,12 @@ namespace CUE4Parse.UE4.Assets.Exports
 
             }
 
+            if (Outer != null)
+            {
+                writer.WritePropertyName("AssetPath");
+                writer.WriteValue(Outer.GetPathName());
+            }
+
             // export properties
             if (Properties.Count > 0)
             {

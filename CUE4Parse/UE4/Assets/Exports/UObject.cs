@@ -309,9 +309,13 @@ namespace CUE4Parse.UE4.Assets.Exports
                     writer.WritePropertyName("ClassRef");
                     serializer.Serialize(writer, owner.ResolveObjectIndex(index));
                 }
-                
+
                 writer.WritePropertyName("ClassPath");
                 writer.WriteValue(owner.GetFullClassPath(index));
+
+                writer.WritePropertyName("ObjectPath");
+                writer.WriteValue(Outer.GetPathName());
+
             }
 
             // export properties

@@ -276,7 +276,7 @@ namespace CUE4Parse.UE4.Assets.Exports
             {
                 writer.WritePropertyName("Outer");
                 writer.WriteValue(Outer.Name); // TODO serialize the path too
-                
+
                 writer.WritePropertyName("AssetPath");
                 writer.WriteValue(Outer.GetPathName());
             }

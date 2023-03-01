@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <LangVersion>default</LangVersion>
+    <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>net6.0</TargetFramework>
@@ -39,7 +39,7 @@
     <None Remove="Resources\ACE7Key.bin" />
     <EmbeddedResource Include="Resources\ACE7Key.bin" />
   </ItemGroup>
-  
+
   <PropertyGroup>
     <BuildInParallel>false</BuildInParallel> <!-- we can't run 2 cmake build at same time -->
     <CMakeProject>../CUE4Parse-Natives/</CMakeProject>

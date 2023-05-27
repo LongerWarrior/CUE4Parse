@@ -135,24 +135,60 @@ namespace CUE4Parse_Conversion.Animations
                 }
                 case FACLCompressedAnimData aclData:
                 {
-                    var tracks = aclData.GetCompressedTracks();
-                    var tracksHeader = tracks.GetTracksHeader();
-                    var numSamples = (int) tracksHeader.NumSamples;
+                    uint numSamples = (uint)animSeq.NumFrames;
+                    var posKeys = Array.Empty<FVector>();
+                    var rotKeys = Array.Empty<FQuat>();
+                    var scaleKeys = Array.Empty<FVector>();
+                    // TODO Add guard to be sure Array is atleast 16/13 bytes long
+                    var tag = (buffer_tag32)BitConverter.ToUInt32(aclData.CompressedByteStream, 8);
+                    var version = aclData.CompressedByteStream[12];
 
-                    // Prepare buffers of all samples of each transform property for the native code to populate
-                    var posKeys = new FVector[animSeq.Tracks.Capacity * numSamples];
-                    var rotKeys = new FQuat[posKeys.Length];
-                    var scaleKeys = new FVector[rotKeys.Length];
-
-                    // Let the native code do its job
-                    unsafe
+                    if (tag is buffer_tag32.compressed_clip && (version is >= 3 and <= 5))
                     {
-                        fixed (FVector* posKeysPtr = posKeys)
-                        fixed (FQuat* rotKeysPtr = rotKeys)
-                        fixed (FVector* scaleKeysPtr = scaleKeys)
+                        var clip = aclData.GetCompressedClip(version);
+                        int bufferLength = clip.GetBufferLength(version);
+
+                        // Prepare buffers of all samples of each transform property for the native code to populate
+                        posKeys = new FVector[bufferLength];
+                        rotKeys = new FQuat[bufferLength];
+                        scaleKeys = new FVector[bufferLength];
+
+                        // Let the native code do its job
+                        unsafe
                         {
-                            nReadACLData(tracks.Handle, posKeysPtr, rotKeysPtr, scaleKeysPtr);
+                            fixed (FVector* posKeysPtr = posKeys)
+                            fixed (FQuat* rotKeysPtr = rotKeys)
+                            fixed (FVector* scaleKeysPtr = scaleKeys)
+                            {
+                                nReadACLClipData(clip.Handle, version, posKeysPtr, rotKeysPtr, scaleKeysPtr);
+                            }
                         }
+                    }
+                    else if (tag is buffer_tag32.compressed_tracks && version is >= 5)
+                    {
+                        var tracks = aclData.GetCompressedTracks();
+                        var tracksHeader = tracks.GetTracksHeader();
+                        numSamples = tracksHeader.NumSamples;
+
+                        // Prepare buffers of all samples of each transform property for the native code to populate
+                        posKeys = new FVector[animSeq.Tracks.Capacity * numSamples];
+                        rotKeys = new FQuat[posKeys.Length];
+                        scaleKeys = new FVector[rotKeys.Length];
+
+                        // Let the native code do its job
+                        unsafe
+                        {
+                            fixed (FVector* posKeysPtr = posKeys)
+                            fixed (FQuat* rotKeysPtr = rotKeys)
+                            fixed (FVector* scaleKeysPtr = scaleKeys)
+                            {
+                                nReadACLData(tracks.Handle, posKeysPtr, rotKeysPtr, scaleKeysPtr);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new NotImplementedException("Older ACL versions aren't supported");
                     }
 
                     // Now create CAnimTracks with the data from those big buffers
@@ -561,5 +597,7 @@ namespace CUE4Parse_Conversion.Animations
 
         [DllImport(ACLNative.LIB_NAME)]
         private static extern unsafe void nReadACLData(IntPtr compressedTracks, FVector* outPosKeys, FQuat* outRotKeys, FVector* outScaleKeys);
+        [DllImport(ACLNative.LIB_NAME)]
+        private static extern unsafe void nReadACLClipData(IntPtr compressedClip, byte version, FVector* outPosKeys, FQuat* outRotKeys, FVector* outScaleKeys);
     }
 }

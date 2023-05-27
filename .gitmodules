@@ -1,3 +1,15 @@
 [submodule "CUE4Parse-Natives/ACL/external/acl"]
 	path = CUE4Parse-Natives/ACL/external/acl
 	url = https://github.com/nfrechette/acl.git
+[submodule "CUE4Parse-Natives/ACL/external/acl1_1"]
+	path = CUE4Parse-Natives/ACL/external/acl1_1
+	url = https://github.com/LongerWarrior/acl
+	branch = release/1.1_CUE4Parse
+[submodule "CUE4Parse-Natives/ACL/external/acl1_2"]
+	path = CUE4Parse-Natives/ACL/external/acl1_2
+	url = https://github.com/LongerWarrior/acl
+	branch = release/1.2_CUE4Parse
+[submodule "CUE4Parse-Natives/ACL/external/acl1_3"]
+	path = CUE4Parse-Natives/ACL/external/acl1_3
+	url = https://github.com/LongerWarrior/acl
+	branch = release/1.3_CUE4Parse

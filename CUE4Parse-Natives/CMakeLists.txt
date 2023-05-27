@@ -8,6 +8,12 @@ include_directories("${PROJECT_SOURCE_DIR}/common")
 # ACL
 include_directories("${PROJECT_SOURCE_DIR}/ACL/external/acl/includes")
 include_directories("${PROJECT_SOURCE_DIR}/ACL/external/acl/external/rtm/includes")
+# ACL1.1
+include_directories("${PROJECT_SOURCE_DIR}/ACL/external/acl1_1/includes")
+# ACL1.2
+include_directories("${PROJECT_SOURCE_DIR}/ACL/external/acl1_2/includes")
+# ACL1.3
+include_directories("${PROJECT_SOURCE_DIR}/ACL/external/acl1_3/includes")
 
 add_library("${PROJECT_NAME}" SHARED ${PROJECT_SOURCE_DIR}/ACL/ACL.cpp)
 set_target_properties("${PROJECT_NAME}" PROPERTIES PREFIX "")

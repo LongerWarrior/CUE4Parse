@@ -13,6 +13,7 @@ namespace CUE4Parse.UE4.Assets.Exports.Animation.ACL
         public byte[] CompressedByteStream;
 
         public CompressedTracks GetCompressedTracks() => new(CompressedByteStream);
+        public CompressedClip GetCompressedClip(byte version) => new(version, CompressedByteStream);
 
         public void Bind(byte[] bulkData) => CompressedByteStream = bulkData;
     }

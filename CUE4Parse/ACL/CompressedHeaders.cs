@@ -2,6 +2,22 @@
 
 namespace CUE4Parse.ACL
 {
+    public enum buffer_tag32 : uint
+    {
+        //////////////////////////////////////////////////////////////////////////
+        // Identifies a 'CompressedClip' buffer.
+        // Deprecated, no longer used. Belonged to pre-2.0 file format.
+        compressed_clip = 0xac10ac10,
+
+        //////////////////////////////////////////////////////////////////////////
+        // Identifies a 'compressed_tracks' buffer.
+        compressed_tracks = 0xac11ac11,
+
+        //////////////////////////////////////////////////////////////////////////
+        // Identifies a 'compressed_database' buffer.
+        compressed_database = 0xac11db01,
+    };
+
     public struct RawBufferHeader
     {
         public uint Size;
